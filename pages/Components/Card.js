@@ -1,17 +1,14 @@
 // Card.js
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 const Card = ({ data }) => {
-  const { name, description, latitude, longitude, imageSource } = data;
+  const { title, description } = data;
 
   return (
     <View style={styles.card}>
-      <Image source={{ uri: imageSource }} style={styles.image} />
-      <Text>Name: {name}</Text>
+      <Text>Title: {title}</Text>
       <Text>Description: {description}</Text>
-      <Text>Latitude: {latitude}</Text>
-      <Text>Longitude: {longitude}</Text>
     </View>
   );
 };
@@ -24,12 +21,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 8,
     padding: 16,
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-    marginBottom: 8,
   },
 });
 

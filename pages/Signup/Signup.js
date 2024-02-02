@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const Signup = () => {
@@ -22,7 +22,7 @@ const Signup = () => {
     };
   
     try {
-      const response = await fetch('https://9320-203-110-242-44.ngrok-free.app/auth/signup', {
+      const response = await fetch('https://cb49-203-110-242-40.ngrok-free.app/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,7 +32,11 @@ const Signup = () => {
   
       if (response.ok) {
         // Registration was successful
+        // const { token } = await response.json();
+        // // Save the JWT token securely using AsyncStorage
+        // await AsyncStorage.setItem('authToken', token);
         alert('Registration successful! You can now log in.');
+        
         navigation.navigate('Login'); // Navigate to the login screen
       } else {
         const data = await response.json();

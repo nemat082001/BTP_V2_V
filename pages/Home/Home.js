@@ -18,7 +18,7 @@ const Home = () => {
       </Text>
 
       <Button title="Learn more" onPress={() => alert('Learn more button clicked')} />
-      <Button title="ViewSurvey" onPress={() => navigation.navigate('ViewSurvey')} />
+      {/* <Button title="ViewSurvey" onPress={() => navigation.navigate('ViewSurvey')} /> */}
 
     </View>
       <View style={styles.signupButtonContainer}>

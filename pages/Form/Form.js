@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import {Picker} from '@react-native-picker/picker'
+import { Picker } from '@react-native-picker/picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DynamicForm = () => {
-  const [formFields, setFormFields] = useState([{ id: 1, type: 'text', value: '', choices: [] }]);
+  const [surveyTitle, setSurveyTitle] = useState('');
+  const [surveyDescription, setSurveyDescription] = useState('');
+  const [formFields, setFormFields] = useState([{ id: 1, type: 'text', questionString: '', options: [] }]);
 
   const addFormField = () => {
     const newField = {
       id: formFields.length + 1,
       type: 'text',
-      value: '',
-      choices: [],
+      questionString: '',
+      options: [],
     };
     setFormFields([...formFields, newField]);
   };
@@ -22,21 +25,21 @@ const DynamicForm = () => {
 
   const handleInputChange = (text, id) => {
     const updatedFields = formFields.map((field) =>
-      field.id === id ? { ...field, value: text } : field
+      field.id === id ? { ...field, questionString: text } : field
     );
     setFormFields(updatedFields);
   };
 
   const handleFieldTypeChange = (type, id) => {
     const updatedFields = formFields.map((field) =>
-      field.id === id ? { ...field, type, choices: [] } : field
+      field.id === id ? { ...field, type, options: [] } : field
     );
     setFormFields(updatedFields);
   };
 
-  const addChoice = (id, choice) => {
+  const addChoice = (id, option) => {
     const updatedFields = formFields.map((field) =>
-      field.id === id ? { ...field, choices: [...field.choices, choice] } : field
+      field.id === id ? { ...field, options: [...field.options, option] } : field
     );
     setFormFields(updatedFields);
   };
@@ -44,7 +47,7 @@ const DynamicForm = () => {
   const removeChoice = (id, choiceIndex) => {
     const updatedFields = formFields.map((field) =>
       field.id === id
-        ? { ...field, choices: field.choices.filter((_, index) => index !== choiceIndex) }
+        ? { ...field, options: field.options.filter((_, index) => index !== choiceIndex) }
         : field
     );
     setFormFields(updatedFields);
@@ -57,7 +60,7 @@ const DynamicForm = () => {
       return (
         <View>
           <Text style={styles.label}>Options:</Text>
-          {field.choices.map((choice, index) => (
+          {field.options.map((choice, index) => (
             <View key={index} style={styles.choiceContainer}>
               <Text>{`${index + 1}. ${choice}`}</Text>
               <TouchableOpacity onPress={() => removeChoice(field.id, index)}>
@@ -69,7 +72,11 @@ const DynamicForm = () => {
             placeholder="Add option"
             style={styles.input}
             value={field.newChoice || ''}
-            onChangeText={(text) => setFormFields((prevFields) => prevFields.map((f) => (f.id === field.id ? { ...f, newChoice: text } : f)))}
+            onChangeText={(text) =>
+              setFormFields((prevFields) =>
+                prevFields.map((f) => (f.id === field.id ? { ...f, newChoice: text } : f))
+              )
+            }
           />
           <TouchableOpacity onPress={() => addChoice(field.id, field.newChoice)} style={styles.addButton}>
             <Text style={styles.addButtonText}>Add Option</Text>
@@ -78,14 +85,64 @@ const DynamicForm = () => {
       );
     }
   };
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
+    try {
+      const token = await AsyncStorage.getItem('jwtToken')
+      console.log(token)
+      await fetch('https://44f0-203-110-242-33.ngrok-free.app/survey/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: surveyTitle,
+          description: surveyDescription,
+          surveyQuestions: formFields,
+        }),
+      }).then(response => {
+        if(!response.ok){
+          throw new Error(`HTTP error status::${response.status}`);
+        }
+        console.log(response.ok);
+        return response.json();
+      });
+
+      // if (response.ok) {
+      //   // Survey creation was successful
+      //   alert('Survey successfully created');
+      //   // navigation.navigate('Login'); // Navigate to the login screen
+      // } else {
+      //   // const data = await response.json();
+      //   alert(`Survey creation failed: ${data.message}`);
+      // }
+    } catch (error) {
+      console.error('Error occurred during survey creation:', error);
+      alert('An error occurred during survey creation. Please try again later.');
+    }
+
     // Handle form submission here, you can access formFields state to get all the values.
-    console.log('Form Submitted:', formFields);
+    console.log('Form Submitted:', { title: surveyTitle, description: surveyDescription, surveyQuestions: formFields });
+    console.log(formFields)
     // Add your submission logic here
   };
+
   return (
     <View style={styles.container}>
       <ScrollView>
+        <TextInput
+          style={styles.input}
+          value={surveyTitle}
+          onChangeText={(text) => setSurveyTitle(text)}
+          placeholder="Survey Title"
+        />
+        <TextInput
+          style={styles.input}
+          value={surveyDescription}
+          onChangeText={(text) => setSurveyDescription(text)}
+          placeholder="Survey Description"
+        />
         {formFields.map((field) => (
           <View key={field.id} style={styles.fieldContainer}>
             <View style={styles.fieldTypeContainer}>

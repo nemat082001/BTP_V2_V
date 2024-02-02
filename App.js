@@ -22,7 +22,7 @@ const App = () => {
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Form" component={Form}/>
-        {/* <Stack.Screen name="FillForm" component={FormFromJSON}/> */}
+        <Stack.Screen name="FillForm" component={FormFromJSON}/>
         {/* view survey button to be removed post development, only here for unauthorised access */}
         <Stack.Screen name="ViewSurvey" component={ViewSurvey} options={{headerShown: false}}/>
         {/* <Stack.Screen name="Dashboard" component={Dashboard}/> */}

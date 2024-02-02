@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -9,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  let status = null;
 
   // const handleLogin = async () => {
   //   try {
@@ -51,19 +53,35 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("https://9320-203-110-242-44.ngrok-free.app/auth/login", {
+      console.log(email, password)
+       await fetch("http://f778-203-110-242-44.ngrok-free.app/auth/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password }) // Use the actual email and password entered by the user
+        body: JSON.stringify({ email:email, password:password }) // Use the actual email and password entered by the user
+      }).then(response=>{
+        console.log(response.ok)
+        if(!response.ok){
+          throw new Error('erorr', error.message)
+        }
+        return response.json();
+      }).then(async( data)=>{
+        await AsyncStorage.setItem("jwtToken", data.token);
+        // if (response.status === 200) {
+  
+          // console.log(response.data.token)
+          navigation.navigate('ViewSurvey');
+        // } else {
+        //   setError('Invalid email or password. Please try again.');
+        // }
+        console.log(data);
+      }).catch((error)=>{
+        console.log(error);
       });
 
-      if (response.status === 200) {
-        navigation.navigate('ViewSurvey');
-      } else {
-        setError('Invalid email or password. Please try again.');
-      }
+      // console.log(response.json());
+      
     } catch (error) {
       setError('An error occurred during login. Please try again.');
     }
