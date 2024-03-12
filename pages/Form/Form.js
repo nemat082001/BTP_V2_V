@@ -90,7 +90,7 @@ const DynamicForm = () => {
     try {
       const token = await AsyncStorage.getItem('jwtToken')
       console.log(token)
-      await fetch('https://44f0-203-110-242-33.ngrok-free.app/survey/', {
+      await fetch('http://65.2.70.232/api/survey/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

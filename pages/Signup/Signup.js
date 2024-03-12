@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+// import Config from 'react-native-config';
 
 const Signup = () => {
   const navigation = useNavigation(); // Access the navigation object
@@ -20,9 +21,10 @@ const Signup = () => {
       email,
       password,
     };
-  
+    
+    // console.log(Config.BASE_URL)
     try {
-      const response = await fetch('https://cb49-203-110-242-40.ngrok-free.app/auth/signup', {
+      const response = await fetch("65.2.70.232/api/auth/signup", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

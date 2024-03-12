@@ -12,7 +12,7 @@ const ForgotPassword = () => {
         return;
       }
 
-      const response = await fetch('https://0e7c-203-110-242-44.ngrok-free.app/auth/forgotPassword', {
+      const response = await fetch('http://65.2.70.232/api/auth/forgotPassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

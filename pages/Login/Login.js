@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import Config from 'react-native-config';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -52,9 +53,10 @@ const Login = () => {
   // }
 
   const handleLogin = async () => {
+    // console.log(Config.BASE_URL)
     try {
       console.log(email, password)
-       await fetch("http://f778-203-110-242-44.ngrok-free.app/auth/login", {
+       await fetch("http://65.2.70.232/api/auth/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

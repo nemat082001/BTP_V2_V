@@ -42,7 +42,7 @@ const Survey = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = "https://44f0-203-110-242-33.ngrok-free.app/survey/getAllSurveys";
+        const apiUrl = "http://65.2.70.232/api/survey/getAllSurveys";
         const token = await AsyncStorage.getItem('jwtToken');
         // console.log(token);
         
@@ -106,3 +106,4 @@ const styles = StyleSheet.create({
 });
 
 export default ViewSurvey;
+

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
-import {CheckBox} from '@react-native-community/checkbox';
+import Checkbox from '@react-native-community/checkbox';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { check } from 'react-native-permissions';
 
 const FormFromJSON = () => {
   const { params } = useRoute();
   const { data } = params;
-  // console.log(data);
+  // console.log("data from form fill", data); ;
 //   const formData = [
 //     {"choices": [], "id": 1, "type": "text", "value": "text"},
 //     {"choices": ["a", "b", "c"], "id": 2, "newChoice": "", "type": "multipleChoice", "value": "MC"},
@@ -20,7 +21,7 @@ const handleSubmit = async () => {
   try {
     const token = await AsyncStorage.getItem('jwtToken')
     console.log(token)
-    await fetch('https://390b-203-110-242-44.ngrok-free.app/survey/', {
+    await fetch('http://65.2.70.232/api/survey/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ useEffect(() => {
   const fetchData = async () => {
     try {
       console.log(data._id);
-      const apiUrl = `https://44f0-203-110-242-33.ngrok-free.app/survey/${data._id}`;
+      const apiUrl = `http://65.2.70.232/api/survey/${data._id}`;
       const token = await AsyncStorage.getItem('jwtToken');
       console.log(token);
       console.log(apiUrl);
@@ -65,7 +66,7 @@ useEffect(() => {
       }).then((data)=>{
         console.log(data);
         setformData(data.questions);
-        console.log(data);
+        console.log(formData);
       })
     }  
     catch(error){
@@ -78,9 +79,10 @@ useEffect(() => {
 
 
   const [formResponses, setFormResponses] = useState({});
-
   const handleTextChange = (question, value) => {
-    setFormResponses({ ...formResponses, [question]: value });
+    formResponses[question._id] = value;
+    setFormResponses({ ...formResponses });
+    console.log("text change: ", formResponses);
   };
 
 //   const handleChoiceChange = (question, choice) => {
@@ -93,28 +95,49 @@ useEffect(() => {
 //     console.log("updated choice : ",updatedChoices)
 //   };
     const [selectedChoice, setSelectedChoice] = useState({});
+	// const handleChoiceChange = (question, choice) => {
+	// 	setSelectedChoice((prevSelectedChoice) => ({
+	// 	...prevSelectedChoice,
+	// 	[question]: choice,
+	// 	}));
+	// 	setFormResponses({ ...formResponses, [question]: selectedChoice });
+	// 	console.log("selec ch" , selectedChoice)
+	// };
+
+	const [checkedItems, setCheckedItems] = useState({});
+	// const handleCheckboxChange = (choice) => {
+	// 	setCheckedItems((prevCheckedItems) => ({
+	// 	...prevCheckedItems,
+	// 	[choice]: !prevCheckedItems[choice],
+	// 	}));
+	// };
+
   const handleChoiceChange = (question, choice) => {
-    setSelectedChoice((prevSelectedChoice) => ({
-      ...prevSelectedChoice,
-      [question]: choice,
-    }));
-    setFormResponses({ ...formResponses, [question]: selectedChoice });
-    console.log("selec ch" , selectedChoice)
+    selectedChoice[question._id] = choice;
+    formResponses[question._id] = choice;
+    setFormResponses({ ...formResponses });
+    console.log("choiceChnage: ", selectedChoice);
+    // console.log("choiceChnage: ", formResponses);
 };
 
-  const [checkedItems, setCheckedItems] = useState({});
-  const handleCheckboxChange = (choice) => {
-    setCheckedItems((prevCheckedItems) => ({
-      ...prevCheckedItems,
-      [choice]: !prevCheckedItems[option],
-    }));
-  };
+const handleCheckboxChange = (i, choice) => {
+  console.log("hello")
+  // console.log("hello", formResponses[i._id], i._id)
+  checkedItems[i._id] = formResponses[i._id] || [];
+  const filterCheckedItems = checkedItems[i._id].includes(choice)
+    ? checkedItems[i._id].filter((c) => c !== choice)
+    : [...checkedItems[i._id], choice];
+  
+  checkedItems[i._id] = filterCheckedItems;
+  formResponses[i._id] = checkedItems;
+  setFormResponses(formResponses);
+  console.log("checkbox-> ", checkedItems);
+  console.log("response: ", formResponses);
+};
 
   const renderForm = () => {
-
-          console.log(formData);
     return formData.map((i) => {
-        console.log("i value: ", i);
+      // console.log("i value: ", i);
       if (i.type=="text") {
         // case "text":
           return (
@@ -122,7 +145,7 @@ useEffect(() => {
               <Text>{i.questionString}</Text>
               <TextInput
                 style={{ borderWidth: 1, padding: 8, marginBottom: 10 }}
-                onChangeText={(text) => handleTextChange(i.value, text)}
+                onChangeText={(text) => handleTextChange(i, text)}
                 placeholder={`Enter ${i.type}`}
               />
             </View>
@@ -135,43 +158,32 @@ useEffect(() => {
             <View key={i._id} style={{ marginBottom: 20 }}>
               <Text>{i.questionString}</Text>
               {i.options.map((options, index) => (
-                <TouchableOpacity key={index} onPress={() => handleChoiceChange(i.value, options)}>
-                  <Text>{options}</Text>
+                <TouchableOpacity key={index} onPress={() => handleChoiceChange(i, options)}
+                >
+                  <Text style={{ color: selectedChoice[i._id] === options ? 'green' : 'black' }}>{options}</Text>
                 </TouchableOpacity>
               ))}
             </View>
           );
               }
 
-    // console.log("i type : ", i.type)
-
-    // if (i.type=="checkbox") {
-    //     // case "checkbox":
-    //       return (
-    //         <View key={i.id} style={{ marginBottom: 20 }}>
-    //           <Text>{i.value}</Text>
-    //           {i.choices.map((choice, index) => (
-    //             <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
-    //               {/* <CheckBox
-    //                 value={}
-    //                 onValueChange={}
-    //               /> */}
-    //               <CheckBox
-    //         title={choice}
-    //         checked={checkedItems[choice] || false}
-    //         onPress={() => handleCheckboxChange(choice)}
-    //       />
-    //             {/* <Text>Checked items: {JSON.stringify(checkedItems)}</Text> */}
-
-    //               <Text>{choice}</Text>
-    //             </View>
-    //           ))}
-    //         </View>
-    //       );
-    //           }
-    //     // default:
-    //       return null;
-            
+    if (i.type=="checkbox") {
+        // case "checkbox":
+          return (
+            <View key={i._id} style={{ marginBottom: 20 }}>
+              <Text>{i.questionString}</Text>
+              {i.options.map((choice, index) => (
+                <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                  <TouchableOpacity
+                    onPress={()=>handleCheckboxChange(i, choice)}>
+                    <Text style={{color: ((checkedItems[i._id].includes(choice)) ? 'green' : 'black') }}>{choice}</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          );
+          }
+          return null; 
     })
 }
 

@@ -10,11 +10,12 @@ import ViewSurvey from './pages/ViewSurvey/ViewSurvey';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import FormFromJSON from './pages/FillForm/fillForm';
 // import Dashboard from './pages/Dashboard/Dashboard';
-
+// import { SafeAreaProvider } from 'react-native-safe-area-context';
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
+    // <SafeAreaProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={Home} />
@@ -28,6 +29,7 @@ const App = () => {
         {/* <Stack.Screen name="Dashboard" component={Dashboard}/> */}
       </Stack.Navigator>
     </NavigationContainer>
+    // </SafeAreaProvider>
   );
 };
 
