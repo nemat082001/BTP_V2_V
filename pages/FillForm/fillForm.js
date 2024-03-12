@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
-import Checkbox from '@react-native-community/checkbox';
+// import Checkbox from '@react-native-community/checkbox';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { check } from 'react-native-permissions';
+// import { check } from 'react-native-permissions';
 
 const FormFromJSON = () => {
   const { params } = useRoute();
@@ -17,8 +17,16 @@ const FormFromJSON = () => {
 
 
 
-const handleSubmit = async () => {
+const handleSubmit = async (formResponses) => {
   try {
+    let answers =  []
+    for (const val in formResponses){
+      console.log("SUbmitting Value", val)
+      answers.push({
+        questionId: val,
+        answerString: formResponses[val]
+      })
+    }
     const token = await AsyncStorage.getItem('jwtToken')
     console.log(token)
     await fetch('http://65.2.70.232/api/survey/', {
@@ -113,27 +121,28 @@ useEffect(() => {
 	// };
 
   const handleChoiceChange = (question, choice) => {
+    // console.log(selectedChoice,question,choice)
     selectedChoice[question._id] = choice;
     formResponses[question._id] = choice;
     setFormResponses({ ...formResponses });
-    console.log("choiceChnage: ", selectedChoice);
+    console.log("choiceChnage: ", formResponses);
     // console.log("choiceChnage: ", formResponses);
 };
 
-const handleCheckboxChange = (i, choice) => {
-  console.log("hello")
-  // console.log("hello", formResponses[i._id], i._id)
-  checkedItems[i._id] = formResponses[i._id] || [];
-  const filterCheckedItems = checkedItems[i._id].includes(choice)
-    ? checkedItems[i._id].filter((c) => c !== choice)
-    : [...checkedItems[i._id], choice];
-  
-  checkedItems[i._id] = filterCheckedItems;
-  formResponses[i._id] = checkedItems;
-  setFormResponses(formResponses);
-  console.log("checkbox-> ", checkedItems);
-  console.log("response: ", formResponses);
-};
+  const handleCheckboxChange = (i, choice) => {
+    const selectedChoices = formResponses[i._id] || [];
+    if (formResponses[i._id] && formResponses[i._id].includes(choice)) {
+      formResponses[i._id] = formResponses[i._id].filter((c) => c !== choice);
+    }
+    else{
+      formResponses[i._id] = [...selectedChoices, choice];
+    }
+    console.log("selectedChoices: ", formResponses);
+    setCheckedItems(formResponses[i._id] || []);
+    // console.log("checkedItems: ", checkedItems);
+    setFormResponses(formResponses);
+    // console.log("response: ", formResponses);
+  };
 
   const renderForm = () => {
     return formData.map((i) => {
@@ -176,7 +185,10 @@ const handleCheckboxChange = (i, choice) => {
                 <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                   <TouchableOpacity
                     onPress={()=>handleCheckboxChange(i, choice)}>
-                    <Text style={{color: ((checkedItems[i._id].includes(choice)) ? 'green' : 'black') }}>{choice}</Text>
+                    <Text style={{
+                      color: formResponses[i._id] && formResponses[i._id].includes(choice) ? 'green' : 'black',
+                    
+                    }}>{choice}</Text>
                   </TouchableOpacity>
                 </View>
               ))}
@@ -191,7 +203,7 @@ const handleCheckboxChange = (i, choice) => {
     <View>
     <ScrollView style={{ padding: 20 }}>
       {renderForm()}
-      <TouchableOpacity onPress={() => console.log('Form Responses:', formResponses)} style={{ marginTop: 20, padding: 10, backgroundColor: 'green', alignItems: 'center', borderRadius: 5 }}>
+      <TouchableOpacity onPress={() => handleSubmit(formResponses)} style={{ marginTop: 20, padding: 10, backgroundColor: 'green', alignItems: 'center', borderRadius: 5 }}>
         <Text style={{ fontSize: 16, color: 'white' }}>Submit Form</Text>
       </TouchableOpacity>
     </ScrollView>

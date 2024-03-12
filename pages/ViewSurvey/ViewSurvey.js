@@ -5,6 +5,7 @@ import Card from '../Components/Card'; // Import the Card component
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Form from '../Form/Form'
 import Logout from '../LogOut/Logout'
+import EditDetailsPage from '../Edit_details/Edit_page';
 import FormFromJSON from '../FillForm/fillForm';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -87,7 +88,9 @@ const Drawer = createDrawerNavigator();
 const ViewSurvey = () => {
   return (
       <Drawer.Navigator initialRouteName="Survey">
+        
         <Drawer.Screen name="Survey" component={Survey}/>
+        <Drawer.Screen name="Profile" component={EditDetailsPage}/>
         {/* <Drawer.Screen name="Home" component={Home}/> */}
         {/* <Drawer.Screen name="Notifications" component={NotificationsScreen} /> */}
         <Drawer.Screen name="Form" component={Form} />
