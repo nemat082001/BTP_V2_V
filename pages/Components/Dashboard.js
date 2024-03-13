@@ -1,4 +1,3 @@
-// Dashboard.js
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -14,7 +13,6 @@ const DashboardScreen = ({ navigation }) => {
         title="Open Drawer"
         onPress={() => navigation.openDrawer()}
       />
-      {/* Add content for your dashboard here */}
     </View>
   );
 };
@@ -24,7 +22,6 @@ const Dashboard = () => {
     <NavigationContainer independent={true}>
       <Drawer.Navigator initialRouteName="Dashboard">
         <Drawer.Screen name="Dashboard" component={DashboardScreen} />
-        {/* Add more screens or links here */}
       </Drawer.Navigator>
     </NavigationContainer>
   );

@@ -2,14 +2,10 @@ import * as React from 'react';
 import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import Form from './pages/Form/Form'
 import ViewSurvey from './pages/ViewSurvey/ViewSurvey'
 import Logout from './pages/LogOut/Logout';
-import Login from './pages/Login/Login'
 import Home from './pages/Home/Home';
-import FormFromJSON from '../FillForm/fillForm';
-
 
 function HomeScreen({ navigation }) {
   return (
@@ -35,21 +31,12 @@ export default function Dashboard() {
   return (
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={Home}/>
+        <Drawer.Screen name="Home" component={Home} />
         <Drawer.Screen name="Notifications" component={NotificationsScreen} />
         <Drawer.Screen name="Form" component={Form} />
-        <Drawer.Screen name="View Survey" component={ViewSurvey}/>
-        {/* <Drawer.Screen name="Fill Form" component={FormFromJSON}/> */}
-        <Drawer.Screen name="Log Out" component={Logout}/>
-        {/* <Drawer.Screen name="Login" component={Login}/> */}
+        <Drawer.Screen name="View Survey" component={ViewSurvey} />
+        <Drawer.Screen name="Log Out" component={Logout} />
       </Drawer.Navigator>
-      {/* <Stack.Navigator>
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-        </Stack.Navigator> */}
     </NavigationContainer>
   );
 }

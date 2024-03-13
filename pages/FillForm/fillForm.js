@@ -38,11 +38,11 @@ const FormFromJSON = ({ navigation }) => {
 					answers
 				}),
 			}).then(response => {
-				// console.log("after submitting", response)
 				if (!response.ok) {
 					throw new Error(`HTTP error status::${response.status}`);
 				}
 				alert('Form submitted successfully');
+				console.log("Submitted Response: ", response)
 				setFormResponses({});
 				setCheckedItems({});
 				setSelectedChoice({});
@@ -123,8 +123,8 @@ const FormFromJSON = ({ navigation }) => {
 						{i.options.map((options, index) => (
 							<TouchableOpacity key={index} onPress={() => handleChoiceChange(i, options)}>
 								<View style={styles.choiceContainer}>
-									<View style={{ width: 16, height: 16, borderRadius: 8, borderWidth: 0.5, borderColor: selectedChoice[i._id] === options ? 'green' : 'gray', justifyContent: 'center', alignItems: 'center' }}>
-										{selectedChoice[i._id] === options && <View style={{ width: 8, height: 8, backgroundColor: 'green', borderRadius: 6 }} />}
+									<View style={[{ borderColor: selectedChoice[i._id] === options ? 'green' : 'gray' }, styles.multipleChoice]}>
+										{selectedChoice[i._id] === options && <View style={styles.multipleChoiceDot} />}
 									</View>
 									<Text
 										style={[{
@@ -147,8 +147,8 @@ const FormFromJSON = ({ navigation }) => {
 								<TouchableOpacity
 									onPress={() => handleCheckboxChange(i, choice)}>
 									<View style={styles.choiceContainer}>
-										<View style={{ width: 16, height: 16, borderRadius: 2, borderWidth: 0.5, borderColor: formResponses[i._id] && formResponses[i._id].includes(choice) ? 'green' : 'gray', justifyContent: 'center', alignItems: 'center' }}>
-											{formResponses[i._id] && formResponses[i._id].includes(choice) && <View style={{ width: 8, height: 8, backgroundColor: 'green', borderRadius: 2 }} />}
+										<View style={[{ borderColor: formResponses[i._id] && formResponses[i._id].includes(choice) ? 'green' : 'gray', }, styles.checkBox]}>
+											{formResponses[i._id] && formResponses[i._id].includes(choice) && <View style={styles.checkBoxDots} />}
 										</View>
 										<Text style={[{
 											color: formResponses[i._id] && formResponses[i._id].includes(choice) ? 'green' : 'black',
@@ -189,6 +189,34 @@ const styles = {
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 5
-	}
+	},
+	multipleChoice: {
+		width: 16,
+		height: 16,
+		borderRadius: 8,
+		borderWidth: 0.5,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	multipleChoiceDot: {
+		width: 8,
+		height: 8,
+		backgroundColor: 'green',
+		borderRadius: 6
+	},
+	checkBox: {
+		width: 16,
+		height: 16,
+		borderRadius: 2,
+		borderWidth: 0.5,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	checkBoxDots: {
+		width: 8,
+		height: 8,
+		backgroundColor: 'green',
+		borderRadius: 2
+	},
 };
 export default FormFromJSON;
