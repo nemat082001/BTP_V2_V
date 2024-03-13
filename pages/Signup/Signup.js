@@ -19,7 +19,7 @@ const Signup = () => {
 			name,
 			email,
 			password,
-			confirmPassword: password
+			confirmPassword
 		};
 		console.log(userData);
 		try {
