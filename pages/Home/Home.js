@@ -21,6 +21,7 @@ const Home = () => {
       <Button title="ViewSurvey" onPress={() => navigation.navigate('ViewSurvey')} />
       <Button title="Edit Profile" onPress={() => navigation.navigate('EditDetailsPage')} />
       <Button title="Survey" onPress={() => navigation.navigate('SurveyPage')} />
+      <Button title="Fill_form" onPress={() => navigation.navigate('FormFromJSON')} />
 
     </View>
       <View style={styles.signupButtonContainer}>

@@ -12,12 +12,10 @@ const SurveyPage = () => {
   const [fileUri, setFileUri] = useState(null);
 
   useEffect(() => {
-    // Fetch survey data from backend
     fetchSurveyData();
   }, []);
 
   const fetchSurveyData = async () => {
-    // Simulate fetching survey data from backend
     const response = await fetch('https://example.com/api/surveys/123');
     const data = await response.json();
     setSurveyData(data);

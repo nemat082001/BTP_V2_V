@@ -5,7 +5,8 @@ import Card from '../Components/Card'; // Import the Card component
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Form from '../Form/Form'
 import Logout from '../LogOut/Logout'
-
+import EditDetailsPage from '../Edit_details/Edit_page';
+import ImageUploadScreen from '../Upload_files/Upload_files';
 
 
 const Survey = () => {
@@ -93,11 +94,15 @@ const Drawer = createDrawerNavigator();
 const ViewSurvey = () => {
   return (
       <Drawer.Navigator initialRouteName="Survey">
+         <Drawer.Screen name="Profile" component={EditDetailsPage}/>
         <Drawer.Screen name="Survey" component={Survey}/>
+        <Drawer.Screen name="File"component={ImageUploadScreen}/>
         {/* <Drawer.Screen name="Home" component={Home}/> */}
         {/* <Drawer.Screen name="Notifications" component={NotificationsScreen} /> */}
         <Drawer.Screen name="Form" component={Form} />
         <Drawer.Screen name="Log Out" component={Logout}/>
+       
+
         {/* <Drawer.Screen name="Login" component={Login}/> */}
       </Drawer.Navigator>
   );

@@ -8,6 +8,8 @@ import ViewSurvey from './pages/ViewSurvey/ViewSurvey'
 import Logout from './pages/LogOut/Logout';
 import Login from './pages/Login/Login'
 import Home from './pages/Home/Home';
+import EditDetailsPage from '../Edit_details/Edit_page';
+import Edit_page from '../Edit_details/Edit_page';
 
 
 function HomeScreen({ navigation }) {
@@ -38,6 +40,7 @@ export default function Dashboard() {
         <Drawer.Screen name="Notifications" component={NotificationsScreen} />
         <Drawer.Screen name="Form" component={Form} />
         <Drawer.Screen name="View Survey" component={ViewSurvey}/>
+        <Drawer.Screen name="Edit Page" component={Edit_page}/>
         <Drawer.Screen name="Log Out" component={Logout}/>
         {/* <Drawer.Screen name="Login" component={Login}/> */}
       </Drawer.Navigator>

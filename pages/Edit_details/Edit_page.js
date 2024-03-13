@@ -17,7 +17,32 @@ const EditDetailsPage = () => {
   const [profilePhotoUri, setProfilePhotoUri] = useState('https://imgs.search.brave.com/KbBaRy8tZA5ORaDygj3xB33SIEqaCbrKi68POUAT-Is/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9w/b3J0cmFpdC1oaXNw/YW5pYy1jb2xsZWdl/LXN0dWRlbnQtY2Fy/cnlpbmctYmFja3Bh/Y2stc3RhbmRpbmct/c2Nob29sLWhhbGx3/YXlfNjYyMjUxLTEx/MDkuanBnP3NpemU9/NjI2JmV4dD1qcGc');
 
   const handleSave = () => {
-    console.log('Details saved:', { name, email, phoneNumber, address, college, projectName, supervisorName });
+    // Prepare the data to send to the backend
+    const updatedProfile = { name, email, phoneNumber, address, college, projectName, supervisorName, profilePhotoUri };
+
+    // Send a POST request to your backend API
+    fetch('https://your-backend.com/api/profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // You might need to include authentication headers if required by your backend
+      },
+      body: JSON.stringify(updatedProfile),
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log('Profile updated successfully!');
+        // Handle any further actions after successful update
+      } else {
+        console.error('Failed to update profile:', response.statusText);
+        // Handle errors
+      }
+    })
+    .catch(error => {
+      console.error('Error updating profile:', error);
+      // Handle errors
+    });
+
     setEditingMode(false);
   };
 
