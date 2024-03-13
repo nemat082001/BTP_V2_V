@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { Picker } from '@react-native-picker/picker';
 const Signup = () => {
 	const navigation = useNavigation();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [name, setName] = useState('');
-
+	const [phoneNumber, setPhoneNumber] = useState('');
+	const [organisation, setOrganisation] = useState('');
+	const [role, setRole] = useState('public');
+	const roles = ['Public', 'Admin', 'Faculty', 'Student', 'NGO Partner', 'Beneficiary']
 	const handleSignup = async () => {
 		if (password !== confirmPassword) {
 			alert('Passwords do not match. Please try again.');
@@ -19,7 +22,10 @@ const Signup = () => {
 			name,
 			email,
 			password,
-			confirmPassword
+			confirmPassword,
+			university: organisation,
+			role,
+			mobileNumber: phoneNumber,
 		};
 		console.log(userData);
 		try {
@@ -43,7 +49,6 @@ const Signup = () => {
 			alert('An error occurred during registration. Please try again later.');
 		}
 	};
-
 
 	return (
 		<View style={styles.container}>
@@ -74,6 +79,40 @@ const Signup = () => {
 				onChangeText={(text) => setConfirmPassword(text)}
 				value={confirmPassword}
 			/>
+			<TextInput
+				style={styles.input}
+				placeholder="Phone Number"
+				onChangeText={(text) => setPhoneNumber(text)}
+				value={phoneNumber}
+			/>
+			<TextInput
+				style={styles.input}
+				placeholder="Organisation"
+				onChangeText={(text) => setOrganisation(text)}
+				value={organisation}
+			/>
+			<View style={{
+				flexDirection: 'row',
+				justifyContent: 'space-between',
+				alignItems: 'centre',
+				width: '80%',
+				height: 40,
+				borderColor: 'gray',
+				borderWidth: 1,
+				marginBottom: 10,
+				paddingLeft: 10,
+			}}>
+				<Text style={{ fontSize: 16, alignSelf: 'center', justifyContent: 'center' }}>Role</Text>
+				<Picker
+					selectedValue={role}
+					onValueChange={(itemValue) => setRole(itemValue)}
+					style={{ width: 150, justifyContent: 'center', alignSelf: 'center' }}
+				>
+					{roles.map((role) => (
+						<Picker.Item key={role} label={role} value={role} />
+					))}
+				</Picker>
+			</View>
 			<Button title="Signup" onPress={handleSignup} />
 		</View>
 	);

@@ -5,7 +5,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Form from '../Form/Form'
 import Logout from '../LogOut/Logout'
 import EditDetailsPage from '../Edit_details/Edit_page';
-import FormFromJSON from '../FillForm/fillForm';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -61,9 +60,10 @@ const ViewSurvey = () => {
 
 			<Drawer.Screen name="Survey" component={Survey} />
 			<Drawer.Screen name="Profile" component={EditDetailsPage} />
-			<Drawer.Screen name="Form" component={Form} />
-			<Drawer.Screen name="FillForm" component={FormFromJSON} />
+			<Drawer.Screen name="Create Survey" component={Form} />
+			{/* <Drawer.Screen name="FillForm" component={FormFromJSON} /> */}
 			<Drawer.Screen name="Log Out" component={Logout} />
+			{/* <Drawer.Screen name="Files" component={Files} /> */}
 		</Drawer.Navigator>
 	);
 };

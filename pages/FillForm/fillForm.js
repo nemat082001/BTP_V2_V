@@ -164,10 +164,34 @@ const FormFromJSON = ({ navigation }) => {
 			return null;
 		})
 	}
-
+	const handleDelete = async (data) => {
+		console.log("Deleted Survey: ", data)
+		try {
+			const apiUrl = `http://65.2.70.232/api/survey/${data._id}`;
+			const token = await AsyncStorage.getItem('jwtToken');
+			await fetch(apiUrl, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				},
+			}).then(response => {
+				return response.json();
+			}).then((res) => {
+				alert('Survey deleted');
+				navigation.navigate("Survey")
+			})
+		}
+		catch (error) {
+			console.log(error);
+		}
+	}
 	return (
 		<View>
 			<ScrollView style={{ padding: 20 }}>
+				<TouchableOpacity onPress={() => handleDelete(data)}>
+					<Text style={{ color: 'red', marginBottom: 10 }}>Delete Survey</Text>
+				</TouchableOpacity>
 				{renderForm()}
 				<TouchableOpacity TouchableOpacity onPress={() => handleSubmit(formResponses)} style={{ marginTop: 20, padding: 10, backgroundColor: 'green', alignItems: 'center', borderRadius: 5 }}>
 					<Text style={{ fontSize: 16, color: 'white' }}>Submit Form</Text>

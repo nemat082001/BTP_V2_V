@@ -20,7 +20,7 @@ const EditDetailsPage = () => {
 	useEffect(() => {
 		const fetchUserProfile = async () => {
 			try {
-				const apiUrl = `http://65.2.70.232/api/getUser/profile`;
+				const apiUrl = "http://65.2.70.232/api/getUser/profile";
 				const token = await AsyncStorage.getItem('jwtToken');
 				await fetch(apiUrl, {
 					method: 'GET',
@@ -74,20 +74,44 @@ const EditDetailsPage = () => {
 		);
 	};
 
-	console.log(user);
+	console.log("curent", user);
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			<Text style={styles.heading}>Profile</Text>
 
 			<ProfilePhoto photoUri={profilePhotoUri} onImageChange={handleImageChange} onEditPress={handleEditPicture} />
 
-			{renderEditableField('Name', name, setName)}
+			{/* {renderEditableField('Name', name, setName)}
 			{renderEditableField('Email', email, setEmail)}
 			{renderEditableField('Phone Number', phoneNumber, setPhoneNumber)}
 			{renderEditableField('Address', address, setAddress)}
 			{renderEditableField('College', college, setCollege)}
 			{renderEditableField('Project Name', projectName, setProjectName)}
-			{renderEditableField('Supervisor Name', supervisorName, setSupervisorName)}
+			{renderEditableField('Supervisor Name', supervisorName, setSupervisorName)} */}
+			{
+				user && (
+					<>
+						<View style={styles.section}>
+							<Text style={styles.label}>Name:</Text>
+							<Text style={styles.value}>{user.name}</Text>
+						</View>
+						<View style={styles.section}>
+							<Text style={styles.label}>Email:</Text>
+							<Text style={styles.value}>{user.email}</Text>
+						</View>
+						<View
+							style={styles.section}>
+							<Text style={styles.label}>Role:</Text>
+							<Text style={styles.value}>{user.role}</Text>
+						</View>
+
+						<View style={styles.section}>
+							<Text style={styles.label}>Joined at:</Text>
+							<Text style={styles.value}>{user?.createdAt?.slice(0, 10)}</Text>
+						</View>
+					</>
+				)
+			}
 
 			{editingMode && (
 				<TouchableOpacity onPress={handleSave} style={styles.saveButton}>
