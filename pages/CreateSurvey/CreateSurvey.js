@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const FormFromJSON = ({ navigation }) => {
+const CreateSurvey = ({ navigation }) => {
 	const { params } = useRoute();
-	const { data } = params;
+	const { surveyList, data, setSurveyList } = params;
 	const [formData, setformData] = useState([]);
 	const [formResponses, setFormResponses] = useState({});
 	const [selectedChoice, setSelectedChoice] = useState({});
 	const [checkedItems, setCheckedItems] = useState({});
-	const [submitted, setSubmitted] = useState(false);
 	const handleSubmit = async (formResponses) => {
 		try {
 			let answers = []
@@ -78,6 +77,33 @@ const FormFromJSON = ({ navigation }) => {
 		}
 		fetchData();
 	}, []);
+
+
+	const handleDelete = async (data) => {
+		console.log("Deleted Survey: ", data)
+		try {
+			const apiUrl = `http://65.2.70.232/api/survey/${data._id}`;
+			const token = await AsyncStorage.getItem('jwtToken');
+			await fetch(apiUrl, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				},
+			}).then(response => {
+				return response.json();
+			}).then((res) => {
+				// alert('Survey deleted');
+				console.log("Deleted Response: ", res)
+				const newSurveyList = surveyList.filter((survey) => survey._id !== data._id);
+				setSurveyList(newSurveyList);
+				navigation.navigate("Survey",)
+			})
+		}
+		catch (error) {
+			console.log(error);
+		}
+	}
 
 	const handleTextChange = (question, value) => {
 		formResponses[question._id] = value;
@@ -164,28 +190,6 @@ const FormFromJSON = ({ navigation }) => {
 			return null;
 		})
 	}
-	const handleDelete = async (data) => {
-		console.log("Deleted Survey: ", data)
-		try {
-			const apiUrl = `http://65.2.70.232/api/survey/${data._id}`;
-			const token = await AsyncStorage.getItem('jwtToken');
-			await fetch(apiUrl, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${token}`
-				},
-			}).then(response => {
-				return response.json();
-			}).then((res) => {
-				alert('Survey deleted');
-				navigation.navigate("Survey")
-			})
-		}
-		catch (error) {
-			console.log(error);
-		}
-	}
 	return (
 		<View>
 			<ScrollView style={{ padding: 20 }}>
@@ -243,4 +247,4 @@ const styles = {
 		borderRadius: 2
 	},
 };
-export default FormFromJSON;
+export default CreateSurvey;

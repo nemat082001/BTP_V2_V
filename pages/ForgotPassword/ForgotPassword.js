@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import Button from '../Components/Button';
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState('');
@@ -43,7 +44,13 @@ const ForgotPassword = () => {
 				onChangeText={(text) => setEmail(text)}
 				value={email}
 			/>
-			<Button title="Reset Password" onPress={handleResetPassword} />
+			<Button
+				textStyle={styles.buttonText}
+				buttonStyle={styles.button}
+				onPress={handleResetPassword}
+			>
+				<Text>Email reset link</Text>
+			</Button>
 			{resetStatus ? <Text style={styles.resetStatus}>{resetStatus}</Text> : null}
 		</View>
 	);
@@ -67,14 +74,31 @@ const styles = StyleSheet.create({
 		width: '80%',
 		height: 40,
 		borderColor: 'gray',
-		borderWidth: 1,
+		borderWidth: 0.5,
 		marginBottom: 10,
+		borderRadius: 5,
 		paddingLeft: 10,
 	},
 	resetStatus: {
 		fontSize: 16,
 		marginTop: 10,
 		color: 'green',
+	},
+	button: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 5,
+		backgroundColor: 'rgb(80, 99, 301)',
+		paddingTop: 10,
+		paddingBottom: 10,
+		paddingLeft: 20,
+		paddingRight: 20,
+	},
+	buttonText: {
+		color: '#fff',
+		fontSize: 16,
+		textAlign: 'center'
 	},
 });
 

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
-import ProfilePhoto from './Profile_Image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const EditDetailsPage = () => {
+const ProfilePage = () => {
 	const navigation = useNavigation();
 	const [editingMode, setEditingMode] = useState(false);
 	const [user, setUser] = useState({});
@@ -79,8 +77,9 @@ const EditDetailsPage = () => {
 		<ScrollView contentContainerStyle={styles.container}>
 			<Text style={styles.heading}>Profile</Text>
 
-			<ProfilePhoto photoUri={profilePhotoUri} onImageChange={handleImageChange} onEditPress={handleEditPicture} />
-
+			<View style={styles.profileContainer}>
+				<Image source={{ uri: profilePhotoUri }} style={styles.profilePhoto} />
+			</View>
 			{/* {renderEditableField('Name', name, setName)}
 			{renderEditableField('Email', email, setEmail)}
 			{renderEditableField('Phone Number', phoneNumber, setPhoneNumber)}
@@ -132,7 +131,16 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 		padding: 16,
 		justifyContent: 'center',
-		backgroundColor: '#a0d2eb',
+		backgroundColor: '#f0f0f0',
+	},
+	profileContainer: {
+		alignItems: 'center',
+		marginBottom: 16,
+	},
+	profilePhoto: {
+		width: 150,
+		height: 150,
+		borderRadius: 75,
 	},
 	heading: {
 		fontSize: 30,
@@ -172,6 +180,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 8,
 	},
+
 });
 
-export default EditDetailsPage;
+export default ProfilePage;

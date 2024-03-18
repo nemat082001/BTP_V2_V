@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Button from '../Components/Button';
 const Login = () => {
 	const navigation = useNavigation();
 	const [email, setEmail] = useState('');
@@ -50,7 +50,14 @@ const Login = () => {
 				onChangeText={(text) => setPassword(text)}
 				value={password}
 			/>
-			<Button title="Login" onPress={handleLogin} />
+			<Button
+				textStyle={styles.buttonText}
+				buttonStyle={styles.button}
+				onPress={handleLogin}
+			>
+				<Text>Login</Text>
+			</Button>
+			{/* <Button title="Login" onPress={handleLogin} /> */}
 			<Text style={styles.signupText}>
 				Don't have an account?{' '}
 				<Text style={styles.signupLink} onPress={() => navigation.navigate('Signup')}>
@@ -78,8 +85,9 @@ const styles = StyleSheet.create({
 		width: '80%',
 		height: 40,
 		borderColor: 'gray',
-		borderWidth: 1,
+		borderWidth: 0.5,
 		marginBottom: 10,
+		borderRadius: 5,
 		paddingLeft: 10,
 	},
 	signupText: {
@@ -94,6 +102,22 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: 'blue',
 		marginTop: 10,
+	},
+	button: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 5,
+		backgroundColor: 'rgb(80, 99, 301)',
+		paddingTop: 10,
+		paddingBottom: 10,
+		paddingLeft: 20,
+		paddingRight: 20,
+	},
+	buttonText: {
+		color: '#fff',
+		fontSize: 16,
+		textAlign: 'center'
 	},
 });
 

@@ -160,7 +160,7 @@ const DynamicForm = () => {
 					</View>
 				))}
 				<TouchableOpacity onPress={addFormField} style={styles.addButton}>
-					<Text style={styles.addButtonText}>Add Field</Text>
+					<Text style={styles.addButtonText}>Add Question</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
 					<Text style={styles.submitButtonText}>Submit Form</Text>
@@ -195,9 +195,10 @@ const styles = {
 		marginLeft: 10,
 	},
 	input: {
-		borderWidth: 1,
+		borderWidth: 0.5,
 		padding: 8,
 		marginBottom: 10,
+		borderRadius: 5,
 	},
 	label: {
 		marginTop: 10,

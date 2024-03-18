@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
+import Button from '../Components/Button';
 const Signup = () => {
 	const navigation = useNavigation();
 	const [email, setEmail] = useState('');
@@ -52,7 +53,7 @@ const Signup = () => {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.heading}>Signup</Text>
+			<Text style={styles.heading}>Sign up</Text>
 			<TextInput
 				style={styles.input}
 				placeholder="Name"
@@ -98,7 +99,8 @@ const Signup = () => {
 				width: '80%',
 				height: 40,
 				borderColor: 'gray',
-				borderWidth: 1,
+				borderWidth: 0.5,
+				borderRadius: 5,
 				marginBottom: 10,
 				paddingLeft: 10,
 			}}>
@@ -113,7 +115,13 @@ const Signup = () => {
 					))}
 				</Picker>
 			</View>
-			<Button title="Signup" onPress={handleSignup} />
+			<Button
+				textStyle={styles.buttonText}
+				buttonStyle={styles.button}
+				onPress={handleSignup}
+			>
+				<Text>Sign up</Text>
+			</Button>
 		</View>
 	);
 };
@@ -132,9 +140,26 @@ const styles = StyleSheet.create({
 		width: '80%',
 		height: 40,
 		borderColor: 'gray',
-		borderWidth: 1,
+		borderWidth: 0.5,
 		marginBottom: 10,
+		borderRadius: 5,
 		paddingLeft: 10,
+	},
+	button: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 5,
+		backgroundColor: 'rgb(80, 99, 301)',
+		paddingTop: 10,
+		paddingBottom: 10,
+		paddingLeft: 20,
+		paddingRight: 20,
+	},
+	buttonText: {
+		color: '#fff',
+		fontSize: 16,
+		textAlign: 'center'
 	},
 });
 
